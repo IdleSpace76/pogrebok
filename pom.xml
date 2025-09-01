@@ -10,6 +10,7 @@
   <name>pogrebok</name>
   <modules>
     <module>dispatcher</module>
+    <module>kafka</module>
   </modules>
 
   <properties>
@@ -22,5 +23,17 @@
     <version>3.5.5</version>
     <relativePath/>
   </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+  </dependencies>
 
 </project>

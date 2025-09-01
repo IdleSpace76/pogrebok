@@ -31,13 +31,13 @@ public class BotUpdateHandler {
     }
 
     public void sendAnswerMsg(Message msg) {
-        SendMessage response = SendMessage.builder()
+        SendMessage answerMsg = SendMessage.builder()
                 .chatId(msg.getChatId().toString())
                 .text(HELLO_BOT_ANSWER)
                 .build();
 
         try {
-            telegramClient.execute(response);
+            telegramClient.execute(answerMsg);
         }
         catch (TelegramApiException e) {
             log.error("Ошибка при отправке сообщения пользователю : {}", msg.getChatId(), e);
