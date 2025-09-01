@@ -1,22 +1,31 @@
 package ru.idles.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
+import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
+import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
-import ru.idles.Controller.TelegramBot;
+import ru.idles.controller.TelegramBot;
 
 /**
  * @author a.zharov
  */
 @Configuration
+@RequiredArgsConstructor
 public class BotConfig {
 
+    private final BotProperties botProperties;
+
     @Bean
-    public TelegramBotsApi telegramBotsApi(TelegramBot telegramBot) throws TelegramApiException {
-        TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-        botsApi.registerBot(telegramBot);
-        return botsApi;
+    public TelegramBotsLongPollingApplication botRegistration(TelegramBot telegramBot) throws TelegramApiException {
+        TelegramBotsLongPollingApplication telegramBotsLongPollingApplication = new TelegramBotsLongPollingApplication();
+        telegramBotsLongPollingApplication.registerBot(botProperties.getToken(), telegramBot);
+        return telegramBotsLongPollingApplication;
+    }
+
+    @Bean
+    public OkHttpTelegramClient telegramClient() {
+        return new OkHttpTelegramClient(botProperties.getToken());
     }
 }
