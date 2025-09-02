@@ -8,6 +8,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import ru.idles.config.KafkaTopicsProperties;
+import ru.idles.service.messaging.KafkaProducerService;
 
 /**
  * @author a.zharov
@@ -18,6 +20,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class BotUpdateHandler {
 
     private final OkHttpTelegramClient telegramClient;
+    private final KafkaProducerService kafkaProducerService;
+    private final KafkaTopicsProperties kafkaTopicsProperties;
 
     private static final String HELLO_BOT_ANSWER = "Hello from bot!";
 
@@ -26,6 +30,7 @@ public class BotUpdateHandler {
         log.info("That's what she said : [{}] : {}", msg.getFrom().getUserName(), msg.getText());
 
         if (msg.hasText()) {
+            kafkaProducerService.sendMessage(kafkaTopicsProperties.getBotMessages(), update.getMessage().toString());
             sendAnswerMsg(msg);
         }
     }

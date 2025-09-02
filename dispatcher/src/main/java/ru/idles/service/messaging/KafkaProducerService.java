@@ -1,4 +1,4 @@
-package ru.idles.messaging;
+package ru.idles.service.messaging;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
