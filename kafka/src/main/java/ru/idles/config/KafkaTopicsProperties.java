@@ -13,5 +13,6 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 public class KafkaTopicsProperties {
-    private String botMessages;
+    private String userMessages;
+    private String nodeMessages;
 }

@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.idles.config.KafkaTopicsProperties;
-import ru.idles.service.messaging.KafkaProducerService;
 
 /**
  * @author a.zharov
@@ -30,19 +29,18 @@ public class BotUpdateHandler {
         log.info("That's what she said : [{}] : {}", msg.getFrom().getUserName(), msg.getText());
 
         if (msg.hasText()) {
-            kafkaProducerService.sendMessage(kafkaTopicsProperties.getBotMessages(), update.getMessage().toString());
-            sendAnswerMsg(msg);
+            kafkaProducerService.sendObjectMessage(kafkaTopicsProperties.getUserMessages(), update.getMessage());
+            SendMessage answerMsg = SendMessage.builder()
+                    .chatId(msg.getChatId().toString())
+                    .text(HELLO_BOT_ANSWER)
+                    .build();
+            sendAnswerMsg(answerMsg);
         }
     }
 
-    public void sendAnswerMsg(Message msg) {
-        SendMessage answerMsg = SendMessage.builder()
-                .chatId(msg.getChatId().toString())
-                .text(HELLO_BOT_ANSWER)
-                .build();
-
+    public void sendAnswerMsg(SendMessage msg) {
         try {
-            telegramClient.execute(answerMsg);
+            telegramClient.execute(msg);
         }
         catch (TelegramApiException e) {
             log.error("Ошибка при отправке сообщения пользователю : {}", msg.getChatId(), e);

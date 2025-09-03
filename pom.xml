@@ -11,10 +11,12 @@
   <modules>
     <module>dispatcher</module>
     <module>kafka</module>
+    <module>Node</module>
   </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <telegram.api.version>9.0.0</telegram.api.version>
   </properties>
 
   <parent>
@@ -37,6 +39,16 @@
     <dependency>
       <groupId>org.springframework.kafka</groupId>
       <artifactId>spring-kafka</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.telegram</groupId>
+      <artifactId>telegrambots-longpolling</artifactId>
+      <version>${telegram.api.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.telegram</groupId>
+      <artifactId>telegrambots-client</artifactId>
+      <version>${telegram.api.version}</version>
     </dependency>
   </dependencies>
 

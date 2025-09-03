@@ -17,7 +17,15 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic botMessagesTopic() {
-        return TopicBuilder.name(kafkaTopicsProperties.getBotMessages())
+        return TopicBuilder.name(kafkaTopicsProperties.getUserMessages())
+                .partitions(3)
+                .replicas(1)
+                .build();
+    }
+
+    @Bean
+    public NewTopic nodeMessagesTopic() {
+        return TopicBuilder.name(kafkaTopicsProperties.getNodeMessages())
                 .partitions(3)
                 .replicas(1)
                 .build();

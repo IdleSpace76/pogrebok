@@ -20,8 +20,10 @@ _________________
 - [ ] Развернуть на сервере
 - [ ] Оформить README (описание + схема)
 
+Переменные среды для ТГ бота
 
 > docker-compose up -d <br/>
+> docker-compose down -v <br/>
 > docker ps
 > 
 > kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic bot-messages <br/>
