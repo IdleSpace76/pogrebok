@@ -1,5 +1,6 @@
 package ru.idles.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class BotUpdateHandler {
     private final OkHttpTelegramClient telegramClient;
     private final KafkaProducerService kafkaProducerService;
     private final KafkaTopicsProperties kafkaTopicsProperties;
+    private final ObjectMapper objectMapper;
 
     private static final String HELLO_BOT_ANSWER = "Hello from bot!";
 
@@ -29,7 +31,7 @@ public class BotUpdateHandler {
         log.info("That's what she said : [{}] : {}", msg.getFrom().getUserName(), msg.getText());
 
         if (msg.hasText()) {
-            kafkaProducerService.sendObjectMessage(kafkaTopicsProperties.getUserMessages(), update.getMessage());
+            kafkaProducerService.sendObjectMessage(kafkaTopicsProperties.getUserMessages(), update);
             SendMessage answerMsg = SendMessage.builder()
                     .chatId(msg.getChatId().toString())
                     .text(HELLO_BOT_ANSWER)

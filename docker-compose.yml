@@ -31,5 +31,18 @@ services:
     depends_on:
       - kafka
 
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: pogrebok_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
 volumes:
   kafka_data:
+  postgres_data:
