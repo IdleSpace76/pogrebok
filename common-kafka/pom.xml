@@ -10,9 +10,12 @@
     <artifactId>common-kafka</artifactId>
     <packaging>jar</packaging>
 
-    <name>kafka</name>
+    <name>common-kafka</name>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+    </dependencies>
 </project>

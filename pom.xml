@@ -36,20 +36,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.springframework.kafka</groupId>
-      <artifactId>spring-kafka</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.telegram</groupId>
-      <artifactId>telegrambots-longpolling</artifactId>
-      <version>${telegram.api.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.telegram</groupId>
-      <artifactId>telegrambots-client</artifactId>
-      <version>${telegram.api.version}</version>
-    </dependency>
   </dependencies>
 
 </project>
