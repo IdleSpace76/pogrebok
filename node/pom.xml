@@ -7,7 +7,7 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>Node</artifactId>
+    <artifactId>node</artifactId>
     <packaging>jar</packaging>
 
     <name>Node</name>
@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>ru.idles</groupId>
-            <artifactId>kafka</artifactId>
+            <artifactId>common-kafka</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

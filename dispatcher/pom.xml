@@ -19,7 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>ru.idles</groupId>
-            <artifactId>kafka</artifactId>
+            <artifactId>common-kafka</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

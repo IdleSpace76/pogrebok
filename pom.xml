@@ -10,8 +10,8 @@
   <name>pogrebok</name>
   <modules>
     <module>dispatcher</module>
-    <module>kafka</module>
-    <module>Node</module>
+    <module>common-kafka</module>
+    <module>node</module>
   </modules>
 
   <properties>
