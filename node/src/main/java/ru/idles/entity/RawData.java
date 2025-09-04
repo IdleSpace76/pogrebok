@@ -1,9 +1,7 @@
 package ru.idles.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -15,6 +13,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
 @Table(name = "raw_data")
 public class RawData {
 
