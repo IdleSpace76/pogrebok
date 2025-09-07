@@ -22,24 +22,17 @@ public class BotUpdateHandler {
     private final KafkaProducerService kafkaProducerService;
     private final KafkaTopicsProperties kafkaTopicsProperties;
 
-    private static final String HELLO_BOT_ANSWER = "Hello from bot!";
-
     public void handleUpdate(Update update) {
         Message msg = update.getMessage();
-        log.info("That's what she said : [{}] : {}", msg.getFrom().getUserName(), msg.getText());
+        log.info("Сообщение от пользователя [{}] : {}", msg.getFrom().getUserName(), msg.getText());
 
-        if (msg.hasText()) {
+        if (update.hasMessage()) {
             processTextMessage(update);
         }
     }
 
     private void processTextMessage(Update update) {
         kafkaProducerService.sendObjectMessage(kafkaTopicsProperties.getUserMessages(), update);
-        SendMessage answerMsg = SendMessage.builder()
-                .chatId(update.getMessage().getChatId().toString())
-                .text(HELLO_BOT_ANSWER)
-                .build();
-        sendAnswerMsg(answerMsg);
     }
 
     public void sendAnswerMsg(SendMessage msg) {

@@ -22,7 +22,7 @@ public class KafkaConsumerService {
 
     @KafkaListener(topics = "${kafka.topics.node-messages}")
     public void listen(String message) throws JsonProcessingException {
-        log.info("Получено сообщение из Kafka: {}", message);
+        log.info("Получено сообщение от брокера: {}", message);
         NodeMsgDto dto = objectMapper.readValue(message, NodeMsgDto.class);
         SendMessage answerMsg = SendMessage.builder()
                 .chatId(dto.getChatId())
