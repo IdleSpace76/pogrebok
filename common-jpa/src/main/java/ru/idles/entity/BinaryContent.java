@@ -21,6 +21,6 @@ public class BinaryContent {
     @Column(name = "id")
     private Long id;
 
-    @Lob
-    private byte[] fileAsArrayOfBytes;
+    @Column(columnDefinition = "bytea")
+    private byte[] fileAsBytes;
 }

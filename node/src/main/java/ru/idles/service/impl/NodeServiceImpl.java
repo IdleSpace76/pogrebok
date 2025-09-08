@@ -14,7 +14,7 @@ import ru.idles.enums.BotCommands;
 import ru.idles.enums.UserState;
 import ru.idles.dao.BotUserRepository;
 import ru.idles.exception.UploadFileException;
-import ru.idles.service.FileService;
+import ru.idles.service.DocService;
 import ru.idles.service.KafkaProducerService;
 import ru.idles.service.NodeService;
 
@@ -29,7 +29,7 @@ public class NodeServiceImpl implements NodeService {
     private final KafkaProducerService kafkaProducerService;
     private final KafkaTopicsProperties kafkaTopicsProperties;
     private final BotUserRepository botUserRepository;
-    private final FileService fileService;
+    private final DocService docService;
 
     private static final String UNKNOWN_ERROR_TEXT = "Неизвестная ошибка, введите /cancel и попробуйте снова";
 
@@ -82,7 +82,7 @@ public class NodeServiceImpl implements NodeService {
             return;
         }
         try {
-            BotDocument doc = fileService.processFile(userMsg);
+            BotDocument doc = docService.processDoc(userMsg);
             // TODO генерация ссылки для скачивания
             String answerText = "Документ успешно загружен! Ссылка для скачивания: http://test.ru/doc/777";
             sendAnswer(answerText, chatId);

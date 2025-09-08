@@ -6,6 +6,6 @@ import ru.idles.entity.BotDocument;
 /**
  * @author a.zharov
  */
-public interface FileService {
-    BotDocument processFile(Message externalMessage);
+public interface DocService {
+    BotDocument processDoc(Message externalMessage);
 }
