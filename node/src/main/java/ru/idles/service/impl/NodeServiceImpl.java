@@ -9,12 +9,13 @@ import org.telegram.telegrambots.meta.api.objects.message.Message;
 import ru.idles.config.KafkaTopicsProperties;
 import ru.idles.dto.NodeMsgDto;
 import ru.idles.entity.BotDocument;
+import ru.idles.entity.BotImage;
 import ru.idles.entity.BotUser;
 import ru.idles.enums.BotCommands;
 import ru.idles.enums.UserState;
 import ru.idles.dao.BotUserRepository;
 import ru.idles.exception.UploadFileException;
-import ru.idles.service.DocService;
+import ru.idles.service.FileService;
 import ru.idles.service.KafkaProducerService;
 import ru.idles.service.NodeService;
 
@@ -29,7 +30,7 @@ public class NodeServiceImpl implements NodeService {
     private final KafkaProducerService kafkaProducerService;
     private final KafkaTopicsProperties kafkaTopicsProperties;
     private final BotUserRepository botUserRepository;
-    private final DocService docService;
+    private final FileService fileService;
 
     private static final String UNKNOWN_ERROR_TEXT = "Неизвестная ошибка, введите /cancel и попробуйте снова";
 
@@ -82,7 +83,7 @@ public class NodeServiceImpl implements NodeService {
             return;
         }
         try {
-            BotDocument doc = docService.processDoc(userMsg);
+            BotDocument doc = fileService.processDoc(userMsg);
             // TODO генерация ссылки для скачивания
             String answerText = "Документ успешно загружен! Ссылка для скачивания: http://test.ru/doc/777";
             sendAnswer(answerText, chatId);
@@ -100,9 +101,18 @@ public class NodeServiceImpl implements NodeService {
         if (isNotAllowedToSendContent(chatId, botUser)) {
             return;
         }
-        // TODO Сохранение изображения
-        String answerText = "Изображение успешно загружено! Ссылка для скачивания: http://test.ru/photo/777";
-        sendAnswer(answerText, chatId);
+
+        try {
+            BotImage botImage = fileService.processImage(userMsg);
+            // TODO Генерация ссылки
+            String answerText = "Изображение успешно загружено! Ссылка для скачивания: http://test.ru/photo/777";
+            sendAnswer(answerText, chatId);
+        }
+        catch (UploadFileException e) {
+            log.error("Загрузка не удалась", e);
+            String errorText = "Загрузка изображения не удалась. Повторите попытку позже";
+            sendAnswer(errorText, chatId);
+        }
     }
 
     private void processUnsupported(Message userMsg) {

@@ -6,29 +6,26 @@ import lombok.*;
 /**
  * @author a.zharov
  */
-@Table(name = "bot_document")
+@Table(name = "bot_image")
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 @Builder
 @AllArgsConstructor
-public class BotDocument {
+public class BotImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @SequenceGenerator(name = "bot_document_seq", sequenceName = "bot_document_seq", allocationSize = 1)
+    @SequenceGenerator(name = "bot_image_seq", sequenceName = "bot_image_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
     private String telegramId;
-    private String docName;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "binary_content_id")
     private BinaryContent binaryContent;
 
-    private String mimeType;
-    private Long fileSize;
-
+    private Integer fileSize;
 }

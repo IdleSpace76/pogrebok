@@ -9,16 +9,20 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import org.springframework.web.util.UriTemplate;
 import org.telegram.telegrambots.meta.api.objects.Document;
 import org.telegram.telegrambots.meta.api.objects.message.Message;
+import org.telegram.telegrambots.meta.api.objects.photo.PhotoSize;
 import ru.idles.config.TelegramProperties;
 import ru.idles.dao.BinaryContentRepository;
 import ru.idles.dao.BotDocumentRepository;
+import ru.idles.dao.BotImageRepository;
 import ru.idles.dto.TgGetFileDto;
 import ru.idles.entity.BinaryContent;
 import ru.idles.entity.BotDocument;
+import ru.idles.entity.BotImage;
 import ru.idles.exception.UploadFileException;
-import ru.idles.service.DocService;
+import ru.idles.service.FileService;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,11 +30,12 @@ import java.util.Map;
  */
 @Service
 @RequiredArgsConstructor
-public class DocServiceImpl implements DocService {
+public class FileServiceImpl implements FileService {
 
     private final TelegramProperties telegramProperties;
     private final BotDocumentRepository botDocumentRepository;
     private final BinaryContentRepository binaryContentRepository;
+    private final BotImageRepository botImageRepository;
     private final WebClient webClient;
 
     @Override
@@ -60,6 +65,45 @@ public class DocServiceImpl implements DocService {
                 .build();
 
         return botDocumentRepository.save(doc);
+    }
+
+    @Override
+    @Transactional
+    public BotImage processImage(Message externalMessage) {
+        // TODO обработка серии фото
+        List<PhotoSize> imageList = externalMessage.getPhoto();
+
+        PhotoSize bestResolution = imageList.stream()
+                .max((a, b) -> {
+                    int areaA = a.getWidth() * a.getHeight();
+                    int areaB = b.getWidth() * b.getHeight();
+                    return Integer.compare(areaA, areaB);
+                })
+                .orElseThrow(() -> new UploadFileException("Не удалось выбрать подходящий вариант фото"));
+
+        String fileId = bestResolution.getFileId();
+
+        // 1) получаем file_path
+        String filePath = fetchFilePath(fileId);
+
+        // 2) скачиваем байты
+        byte[] bytes = downloadFile(filePath);
+
+        // 3) готовим бинарник
+        BinaryContent binary = BinaryContent.builder()
+                .fileAsBytes(bytes)
+                .build();
+
+        // 4) сохраняем метаданные фото
+        Integer size = bestResolution.getFileSize();
+
+        BotImage image = BotImage.builder()
+                .telegramId(fileId)
+                .binaryContent(binary)
+                .fileSize(size)
+                .build();
+
+        return botImageRepository.save(image);
     }
 
     private String fetchFilePath(String fileId) {
