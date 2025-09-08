@@ -1,12 +1,12 @@
-package ru.idles.repository;
+package ru.idles.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.idles.entity.RawData;
+import ru.idles.entity.BotDocument;
 
 /**
  * @author a.zharov
  */
 @Repository
-public interface RawDataRepository extends JpaRepository<RawData, Long> {
+public interface BotDocumentRepository extends JpaRepository<BotDocument, Long> {
 }

@@ -8,7 +8,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.idles.entity.RawData;
-import ru.idles.repository.RawDataRepository;
+import ru.idles.dao.RawDataRepository;
 
 /**
  * @author a.zharov

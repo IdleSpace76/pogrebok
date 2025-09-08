@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "telegram.bot")
 @Getter
 @Setter
-public class BotProperties {
+public class TelegramProperties {
     private String token;
+    private String fileInfoUri;
+    private String fileStorageUri;
 }

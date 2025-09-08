@@ -1,0 +1,26 @@
+package ru.idles.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+/**
+ * @author a.zharov
+ */
+@Table(name = "binary_content")
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity
+@Builder
+@AllArgsConstructor
+public class BinaryContent {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "binary_content_seq", sequenceName = "binary_content_seq", allocationSize = 1)
+    @Column(name = "id")
+    private Long id;
+
+    @Lob
+    private byte[] fileAsArrayOfBytes;
+}
