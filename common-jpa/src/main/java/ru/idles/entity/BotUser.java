@@ -20,7 +20,7 @@ import java.time.Instant;
 public class BotUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bot_user_seq")
     @SequenceGenerator(name = "bot_user_seq", sequenceName = "bot_user_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;

@@ -16,7 +16,7 @@ import lombok.*;
 public class BotDocument {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bot_document_seq")
     @SequenceGenerator(name = "bot_document_seq", sequenceName = "bot_document_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;

@@ -1,6 +1,8 @@
 package ru.idles.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +23,11 @@ import ru.idles.entity.BotImage;
 import ru.idles.exception.UploadFileException;
 import ru.idles.service.FileService;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +37,8 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
+
+    private static final long MAX_BYTES = 20L * 1024 * 1024;
 
     private final TelegramProperties telegramProperties;
     private final BotDocumentRepository botDocumentRepository;
@@ -129,22 +137,45 @@ public class FileServiceImpl implements FileService {
 
     private byte[] downloadFile(String filePath) {
         URI uri = buildFileStorageUri(filePath);
+        Path tmp = null;
         try {
-            byte[] body = webClient.get()
-                    .uri(uri)
-                    .accept(MediaType.APPLICATION_OCTET_STREAM)
-                    .retrieve()
-                    .bodyToMono(byte[].class)
-                    .block(); // синхронно
+            tmp = Files.createTempFile("tg_", ".bin");
 
-            if (body == null || body.length == 0) {
+            DataBufferUtils.write(
+                    webClient.get()
+                            .uri(uri)
+                            .accept(MediaType.APPLICATION_OCTET_STREAM)
+                            .retrieve()
+                            .bodyToFlux(DataBuffer.class),
+                    tmp,
+                    StandardOpenOption.WRITE
+            ).block();
+
+            long size = Files.size(tmp);
+            if (size == 0) {
                 throw new UploadFileException("Пустая загрузка файла");
             }
-            return body;
+            if (size > MAX_BYTES) {
+                throw new UploadFileException("Файл превышает 20 MB");
+            }
+
+            return Files.readAllBytes(tmp);
         }
         catch (WebClientResponseException e) {
             throw new UploadFileException("Неудачная попытка загрузки файла из Telegram: "
                     + e.getStatusCode().value(), e);
+        }
+        catch (IOException e) {
+            throw new UploadFileException("Ошибка работы с временным файлом: " + e);
+        }
+        finally {
+            if (tmp != null) {
+                // Подчищаем за собой
+                try {
+                    Files.deleteIfExists(tmp);
+                }
+                catch (IOException ignored) {}
+            }
         }
     }
 

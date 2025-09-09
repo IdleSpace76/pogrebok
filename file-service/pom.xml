@@ -7,29 +7,25 @@
         <version>0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>node</artifactId>
+    <artifactId>file-service</artifactId>
     <packaging>jar</packaging>
 
-    <name>node</name>
+    <name>file-service</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>ru.idles</groupId>
-            <artifactId>common-kafka</artifactId>
-            <version>${project.version}</version>
-        </dependency>
         <dependency>
             <groupId>ru.idles</groupId>
             <artifactId>common-jpa</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.20.0</version>
         </dependency>
     </dependencies>
 </project>

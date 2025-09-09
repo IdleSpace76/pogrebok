@@ -20,11 +20,6 @@
         </dependency>
         <dependency>
             <groupId>org.telegram</groupId>
-            <artifactId>telegrambots-longpolling</artifactId>
-            <version>${telegram.api.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.telegram</groupId>
             <artifactId>telegrambots-client</artifactId>
             <version>${telegram.api.version}</version>
         </dependency>

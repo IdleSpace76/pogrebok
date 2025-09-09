@@ -16,7 +16,7 @@ import lombok.*;
 public class BotImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bot_image_seq")
     @SequenceGenerator(name = "bot_image_seq", sequenceName = "bot_image_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;

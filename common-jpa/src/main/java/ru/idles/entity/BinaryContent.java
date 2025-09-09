@@ -16,7 +16,7 @@ import lombok.*;
 public class BinaryContent {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "binary_content_seq")
     @SequenceGenerator(name = "binary_content_seq", sequenceName = "binary_content_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;

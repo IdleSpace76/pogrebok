@@ -19,7 +19,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class RawData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "raw_data_seq")
     @SequenceGenerator(name = "raw_data_seq", sequenceName = "raw_data_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
