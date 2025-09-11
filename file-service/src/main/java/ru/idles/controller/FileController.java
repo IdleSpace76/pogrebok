@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.idles.entity.BotDocument;
 import ru.idles.service.FileService;
+import ru.idles.utils.CryptoTool;
 
 import java.nio.charset.StandardCharsets;
 
@@ -26,11 +27,13 @@ import java.nio.charset.StandardCharsets;
 public class FileController {
 
     private final FileService fileService;
+    private final CryptoTool cryptoTool;
+
 
     @GetMapping("/doc")
     public ResponseEntity<ByteArrayResource> getDoc(@RequestParam("id") String id) {
-        // TODO добавить дешифр хеш-строки
-        Long fileId = Long.parseLong(id);
+
+        Long fileId = cryptoTool.idOf(id);
 
         BotDocument meta = fileService.getDocMeta(fileId);
         ByteArrayResource body = fileService.getDocumentAsResource(fileId);
@@ -50,8 +53,8 @@ public class FileController {
 
     @GetMapping("/image")
     public ResponseEntity<ByteArrayResource> getImage(@RequestParam("id") String id) {
-        // TODO добавить дешифр хеш-строки
-        Long fileId = Long.parseLong(id);
+
+        Long fileId = cryptoTool.idOf(id);
 
         ByteArrayResource body = fileService.getImageAsResource(fileId);
 

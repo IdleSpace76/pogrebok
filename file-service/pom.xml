@@ -12,14 +12,15 @@
 
     <name>file-service</name>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>ru.idles</groupId>
             <artifactId>common-jpa</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>ru.idles</groupId>
+            <artifactId>common-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

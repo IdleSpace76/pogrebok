@@ -11,6 +11,7 @@ import ru.idles.entity.BotDocument;
 import ru.idles.entity.BotImage;
 import ru.idles.exception.NotFoundException;
 import ru.idles.service.FileService;
+import ru.idles.utils.CryptoTool;
 
 /**
  * @author a.zharov

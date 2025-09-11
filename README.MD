@@ -6,7 +6,6 @@ _________________
 ## Создано с помощью:
 - Java 21
 - Spring Boot 3.5.5
-- Slf4j
 - Telegram Bots Long Polling и Telegram Bots Client v. 9.0.0
 - Apache Kafka
 - Docker
@@ -17,14 +16,11 @@ _________________
 - [x] Создать dispatcher
 - [x] Подключить брокер сообщений
 - [x] Создать Node-микросервис
-- [ ] Создать REST API микросервис
+- [x] Создать REST API микросервис
 - [ ] Создать mail-микросервис
 - [ ] Нагрузочное тестирование
 - [ ] Развернуть на сервере
 - [ ] Оформить README (описание + схема)
-
-Переменные среды для ТГ бота<br/>
-Liquibase?
 
 > docker-compose up -d <br/>
 > docker-compose down -v <br/>
@@ -36,3 +32,8 @@ Liquibase?
 > kafka-topics.sh --bootstrap-server localhost:9092 --list
 > 
 UI для кафки (Kafdrop): http://localhost:9000
+
+Что можно сделать лучше:
+1) при загрузке файла из ТГ не забивать им память, а стримить напрямую в бд
+2) UUID для сущностей, чтобы готовые адреса точно были разными
+3) ликвибейс для миграции

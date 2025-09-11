@@ -1,6 +1,7 @@
 package ru.idles.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.MediaType;
@@ -20,8 +21,10 @@ import ru.idles.dto.TgGetFileDto;
 import ru.idles.entity.BinaryContent;
 import ru.idles.entity.BotDocument;
 import ru.idles.entity.BotImage;
+import ru.idles.enums.LinkType;
 import ru.idles.exception.UploadFileException;
 import ru.idles.service.FileService;
+import ru.idles.utils.CryptoTool;
 
 import java.io.IOException;
 import java.net.URI;
@@ -45,6 +48,10 @@ public class FileServiceImpl implements FileService {
     private final BinaryContentRepository binaryContentRepository;
     private final BotImageRepository botImageRepository;
     private final WebClient webClient;
+    private final CryptoTool cryptoTool;
+
+    @Value("${link.address}")
+    private String linkAddress;
 
     @Override
     @Transactional
@@ -78,7 +85,6 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional
     public BotImage processImage(Message externalMessage) {
-        // TODO обработка серии фото
         List<PhotoSize> imageList = externalMessage.getPhoto();
 
         PhotoSize bestResolution = imageList.stream()
@@ -114,6 +120,12 @@ public class FileServiceImpl implements FileService {
         return botImageRepository.save(image);
     }
 
+    @Override
+    public String generateLink(Long fileId, LinkType linkType) {
+        String hash = cryptoTool.hashOf(fileId);
+        return "http://" + linkAddress + "/" + linkType + "?id=" + hash;
+    }
+
     private String fetchFilePath(String fileId) {
         URI uri = buildFileInfoUri(fileId);
         try {
@@ -135,6 +147,7 @@ public class FileServiceImpl implements FileService {
         }
     }
 
+    // Если будут проблемы с памятью, попробовать сделать стрим данных прямо в бд
     private byte[] downloadFile(String filePath) {
         URI uri = buildFileStorageUri(filePath);
         Path tmp = null;

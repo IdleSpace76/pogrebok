@@ -12,6 +12,7 @@ import ru.idles.entity.BotDocument;
 import ru.idles.entity.BotImage;
 import ru.idles.entity.BotUser;
 import ru.idles.enums.BotCommands;
+import ru.idles.enums.LinkType;
 import ru.idles.enums.UserState;
 import ru.idles.dao.BotUserRepository;
 import ru.idles.exception.UploadFileException;
@@ -84,8 +85,8 @@ public class NodeServiceImpl implements NodeService {
         }
         try {
             BotDocument doc = fileService.processDoc(userMsg);
-            // TODO генерация ссылки для скачивания
-            String answerText = "Документ успешно загружен! Ссылка для скачивания: http://test.ru/doc/777";
+            String link = fileService.generateLink(doc.getId(), LinkType.DOC);
+            String answerText = "Документ успешно загружен! Ссылка для скачивания: " + link;
             sendAnswer(answerText, chatId);
         }
         catch (UploadFileException e) {
@@ -104,8 +105,8 @@ public class NodeServiceImpl implements NodeService {
 
         try {
             BotImage botImage = fileService.processImage(userMsg);
-            // TODO Генерация ссылки
-            String answerText = "Изображение успешно загружено! Ссылка для скачивания: http://test.ru/photo/777";
+            String link = fileService.generateLink(botImage.getId(), LinkType.IMAGE);
+            String answerText = "Изображение успешно загружено! Ссылка для скачивания: " + link;
             sendAnswer(answerText, chatId);
         }
         catch (UploadFileException e) {

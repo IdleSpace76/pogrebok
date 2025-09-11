@@ -1,0 +1,21 @@
+package ru.idles.enums;
+
+import lombok.RequiredArgsConstructor;
+
+import java.net.URI;
+
+/**
+ * @author a.zharov
+ */
+@RequiredArgsConstructor
+public enum LinkType {
+    DOC("file/doc"),
+    IMAGE("file/image");
+
+    private final String link;
+
+    @Override
+    public String toString() {
+        return this.link;
+    }
+}
