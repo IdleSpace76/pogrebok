@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd">
+
+    <changeSet id="001-1-create-seq-bot-user" author="azharov">
+        <createSequence
+                sequenceName="bot_user_seq"
+                incrementBy="1"
+                startValue="1"/>
+
+        <rollback>
+            <dropSequence sequenceName="bot_user_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="001-2-create-table-bot-user" author="azharov">
+        <createTable tableName="bot_user">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="telegram_user_id" type="BIGINT"/>
+            <column name="created_at" type="TIMESTAMP WITH TIME ZONE"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="is_active" type="BOOLEAN" defaultValueBoolean="false"/>
+            <column name="state" type="VARCHAR(64)"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="bot_user"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="001-3-constraints-indexes-bot-user" author="azharov">
+        <addUniqueConstraint tableName="bot_user"
+                             columnNames="email"
+                             constraintName="uq_bot_user_email"/>
+
+        <rollback>
+            <dropUniqueConstraint tableName="bot_user" constraintName="uq_bot_user_email"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

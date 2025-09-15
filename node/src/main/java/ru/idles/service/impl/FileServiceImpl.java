@@ -50,7 +50,7 @@ public class FileServiceImpl implements FileService {
     private final WebClient webClient;
     private final CryptoTool cryptoTool;
 
-    @Value("${link.address}")
+    @Value("${service.file.address}")
     private String linkAddress;
 
     @Override

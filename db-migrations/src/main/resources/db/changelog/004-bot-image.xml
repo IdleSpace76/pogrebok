@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd">
+
+    <changeSet id="004-1-create-seq-bot-image" author="azharov">
+        <createSequence sequenceName="bot_image_seq" incrementBy="1" startValue="1"/>
+
+        <rollback>
+            <dropSequence sequenceName="bot_image_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="004-2-create-table-bot-image" author="azharov">
+        <createTable tableName="bot_image">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="telegram_id" type="VARCHAR(255)"/>
+            <column name="binary_content_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="file_size" type="INTEGER"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="bot_image"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="004-3-fk-indexes-bot-image" author="azharov">
+        <addForeignKeyConstraint
+                baseTableName="bot_image"
+                baseColumnNames="binary_content_id"
+                referencedTableName="binary_content"
+                referencedColumnNames="id"
+                constraintName="fk_bot_image_binary_content"
+                onDelete="CASCADE"/>
+
+        <rollback>
+            <dropForeignKeyConstraint baseTableName="bot_image" constraintName="fk_bot_image_binary_content"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

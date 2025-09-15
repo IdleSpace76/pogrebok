@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd">
+
+    <changeSet id="002-1-create-seq-binary-content" author="azharov">
+        <createSequence sequenceName="binary_content_seq" incrementBy="1" startValue="1"/>
+
+        <rollback>
+            <dropSequence sequenceName="binary_content_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="002-2-create-table-binary-content" author="azharov">
+        <createTable tableName="binary_content">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="file_as_bytes" type="BYTEA"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="binary_content"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

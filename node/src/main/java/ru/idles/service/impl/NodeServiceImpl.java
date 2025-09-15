@@ -16,9 +16,12 @@ import ru.idles.enums.LinkType;
 import ru.idles.enums.UserState;
 import ru.idles.dao.BotUserRepository;
 import ru.idles.exception.UploadFileException;
+import ru.idles.service.BotUserService;
 import ru.idles.service.FileService;
 import ru.idles.service.KafkaProducerService;
 import ru.idles.service.NodeService;
+
+import java.util.Optional;
 
 /**
  * @author a.zharov
@@ -32,6 +35,7 @@ public class NodeServiceImpl implements NodeService {
     private final KafkaTopicsProperties kafkaTopicsProperties;
     private final BotUserRepository botUserRepository;
     private final FileService fileService;
+    private final BotUserService botUserService;
 
     private static final String UNKNOWN_ERROR_TEXT = "Неизвестная ошибка, введите /cancel и попробуйте снова";
 
@@ -63,10 +67,10 @@ public class NodeServiceImpl implements NodeService {
             outputText = cancelProcess(botUser);
         }
         else if (UserState.BASIC_STATE.equals(userState)) {
-            outputText = processServiceCommand(userText);
+            outputText = processServiceCommand(userText, botUser);
         }
         else if (UserState.WAIT_FOR_EMAIL_STATE.equals(userState)) {
-            // TODO обработка
+           outputText = botUserService.setEmail(botUser, userText);
         }
         else {
             log.error("Неизвестное состояние пользователя: {}", userState);
@@ -120,7 +124,7 @@ public class NodeServiceImpl implements NodeService {
         // TODO реализация
     }
 
-    private String processServiceCommand(String userText) {
+    private String processServiceCommand(String userText, BotUser botUser) {
         BotCommands enumCommand = BotCommands.findByCmd(userText);
         if (enumCommand != null) {
             switch (enumCommand) {
@@ -128,7 +132,7 @@ public class NodeServiceImpl implements NodeService {
                     return helpProcess();
                 }
                 case REGISTRATION -> {
-                    return registrationProcess();
+                    return registrationProcess(botUser);
                 }
                 case START -> {
                     return startProcess();
@@ -153,8 +157,8 @@ public class NodeServiceImpl implements NodeService {
         return "Приветствую! Чтобы посмотреть список доступных команд, введи /help";
     }
 
-    private String registrationProcess() {
-        return "Временно недоступен";
+    private String registrationProcess(BotUser botUser) {
+        return botUserService.registerUser(botUser);
     }
 
     private String helpProcess() {
@@ -162,20 +166,19 @@ public class NodeServiceImpl implements NodeService {
     }
 
     private BotUser findOrSaveBotUser(User telegramUser) {
-        BotUser botUser = botUserRepository.findBotUserByTelegramUserId(telegramUser.getId());
-        if (botUser == null) {
+        Optional<BotUser> botUser = botUserRepository.findBotUserByTelegramUserId(telegramUser.getId());
+        if (botUser.isEmpty()) {
             BotUser transientBotUser = BotUser.builder()
                     .telegramUserId(telegramUser.getId())
                     .username(telegramUser.getUserName())
                     .firstName(telegramUser.getFirstName())
                     .lastName(telegramUser.getLastName())
-                    // TODO изменить значение по умолчанию
-                    .isActive(true)
+                    .isActive(false)
                     .state(UserState.BASIC_STATE)
                     .build();
             return botUserRepository.save(transientBotUser);
         }
-        return botUser;
+        return botUser.get();
     }
 
     private boolean isAllowedToSendContent(String chatId, BotUser botUser) {

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+          http://www.liquibase.org/xml/ns/dbchangelog
+          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.23.xsd">
+
+    <changeSet id="005-1-create-seq-raw-data" author="azharov">
+        <createSequence sequenceName="raw_data_seq" incrementBy="1" startValue="1"/>
+
+        <rollback>
+            <dropSequence sequenceName="raw_data_seq"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="005-2-create-table-raw-data" author="azharov">
+        <createTable tableName="raw_data">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="event" type="JSONB"/>
+        </createTable>
+
+        <rollback>
+            <dropTable tableName="raw_data"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>
