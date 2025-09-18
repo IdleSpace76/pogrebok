@@ -7,6 +7,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import ru.idles.service.BotUpdateHandler;
 
 /**
+ * Главный контроллера для приёма сообщений
+ *
  * @author a.zharov
  */
 @Component

@@ -17,6 +17,9 @@ public class BotConfig {
 
     private final BotProperties botProperties;
 
+    /**
+     * Регистрация бота
+     */
     @Bean
     public TelegramBotsLongPollingApplication botRegistration(TelegramBot telegramBot) throws TelegramApiException {
         TelegramBotsLongPollingApplication telegramBotsLongPollingApplication = new TelegramBotsLongPollingApplication();
@@ -24,6 +27,9 @@ public class BotConfig {
         return telegramBotsLongPollingApplication;
     }
 
+    /**
+     * ТГ клиент (для отправки сообщений)
+     */
     @Bean
     public OkHttpTelegramClient telegramClient() {
         return new OkHttpTelegramClient(botProperties.getToken());

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 /**
+ * Сущность документов
+ *
  * @author a.zharov
  */
 @Table(name = "bot_document")
@@ -22,6 +24,7 @@ public class BotDocument {
     private Long id;
 
     private String telegramId;
+
     private String docName;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -29,6 +32,7 @@ public class BotDocument {
     private BinaryContent binaryContent;
 
     private String mimeType;
+
     private Long fileSize;
 
 }

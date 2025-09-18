@@ -9,6 +9,7 @@
 
     <artifactId>dispatcher</artifactId>
     <packaging>jar</packaging>
+    <description>Диспетчер - контроллер для работы пользователя с сервисом</description>
 
     <name>dispatcher</name>
 

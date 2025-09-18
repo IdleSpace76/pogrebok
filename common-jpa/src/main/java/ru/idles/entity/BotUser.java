@@ -8,6 +8,8 @@ import ru.idles.enums.UserState;
 import java.time.Instant;
 
 /**
+ * Сущность пользователя
+ *
  * @author a.zharov
  */
 @NoArgsConstructor
@@ -31,9 +33,13 @@ public class BotUser {
     private Instant createdAt;
 
     private String firstName;
+
     private String lastName;
+
     private String email;
+
     private String username;
+
     private Boolean isActive;
 
     @Enumerated(EnumType.STRING)

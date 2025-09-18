@@ -121,7 +121,8 @@ public class NodeServiceImpl implements NodeService {
     }
 
     private void processUnsupported(Message userMsg) {
-        // TODO реализация
+        String answerText = "Неподдерживаемый тип сообщения.";
+        sendAnswer(answerText, userMsg.getChatId().toString());
     }
 
     private String processServiceCommand(String userText, BotUser botUser) {

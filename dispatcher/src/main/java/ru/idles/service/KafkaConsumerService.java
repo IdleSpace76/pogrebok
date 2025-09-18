@@ -20,8 +20,11 @@ public class KafkaConsumerService {
     private final BotUpdateHandler botUpdateHandler;
     private final ObjectMapper objectMapper;
 
+    /**
+     * Слушатель ноды
+     */
     @KafkaListener(topics = "${kafka.topics.node-messages}")
-    public void listen(String message) throws JsonProcessingException {
+    public void listenNode(String message) throws JsonProcessingException {
         log.info("Получено сообщение от брокера: {}", message);
         NodeMsgDto dto = objectMapper.readValue(message, NodeMsgDto.class);
         SendMessage answerMsg = SendMessage.builder()

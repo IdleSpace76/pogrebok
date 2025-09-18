@@ -18,6 +18,8 @@ import ru.idles.utils.CryptoTool;
 import java.nio.charset.StandardCharsets;
 
 /**
+ * Контроллер получения файлов
+ *
  * @author a.zharov
  */
 @RestController

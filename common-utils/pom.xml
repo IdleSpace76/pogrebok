@@ -9,6 +9,7 @@
 
     <artifactId>common-utils</artifactId>
     <packaging>jar</packaging>
+    <description>Утилиты : хэширование данных</description>
 
     <name>common-utils</name>
 

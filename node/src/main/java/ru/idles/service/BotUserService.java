@@ -3,6 +3,8 @@ package ru.idles.service;
 import ru.idles.entity.BotUser;
 
 /**
+ * Интерфейс работы с данными пользователя
+ *
  * @author a.zharov
  */
 public interface BotUserService {

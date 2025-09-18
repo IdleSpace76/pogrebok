@@ -5,6 +5,8 @@ import lombok.Data;
 import org.telegram.telegrambots.meta.api.objects.File;
 
 /**
+ * Дто с информацией ТГ документа
+ *
  * @author a.zharov
  */
 @Data

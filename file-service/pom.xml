@@ -9,6 +9,7 @@
 
     <artifactId>file-service</artifactId>
     <packaging>jar</packaging>
+    <description>Сервис для работы с байтовым содержимым медиа</description>
 
     <name>file-service</name>
 

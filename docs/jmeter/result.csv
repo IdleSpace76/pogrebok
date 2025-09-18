@@ -1,0 +1,3 @@
+Label,# Samples,Average,Min,Max,Std. Dev.,Error %,Throughput,Received KB/sec,Sent KB/sec,Avg. Bytes
+GET /file/image,63770,4,2,96,1.06,0.000%,2128.71783,31643.29,291.04,15221.7
+TOTAL,63770,4,2,96,1.06,0.000%,2128.71783,31643.29,291.04,15221.7

@@ -6,6 +6,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Проперти - наименования топиков
+ *
  * @author a.zharov
  */
 @Configuration
@@ -15,4 +17,5 @@ import org.springframework.context.annotation.Configuration;
 public class KafkaTopicsProperties {
     private String userMessages;
     private String nodeMessages;
+    private String registrationMail;
 }

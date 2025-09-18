@@ -2,9 +2,9 @@ package ru.idles.enums;
 
 import lombok.RequiredArgsConstructor;
 
-import java.net.URI;
-
 /**
+ * Ссылка на тип файла
+ *
  * @author a.zharov
  */
 @RequiredArgsConstructor

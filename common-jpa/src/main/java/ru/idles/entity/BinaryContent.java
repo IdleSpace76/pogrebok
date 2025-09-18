@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 /**
+ * Сущность байтового содержимого медиа
+ *
  * @author a.zharov
  */
 @Table(name = "binary_content")

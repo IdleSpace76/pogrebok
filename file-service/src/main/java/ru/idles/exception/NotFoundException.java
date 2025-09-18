@@ -1,6 +1,8 @@
 package ru.idles.exception;
 
 /**
+ * Исключение - Не найдено содержимое документа
+ *
  * @author a.zharov
  */
 public class NotFoundException extends RuntimeException {

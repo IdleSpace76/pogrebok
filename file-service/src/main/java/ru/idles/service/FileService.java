@@ -6,6 +6,8 @@ import ru.idles.entity.BotDocument;
 import ru.idles.entity.BotImage;
 
 /**
+ * Интерфейс работы с байтовым содержимым медиа
+ *
  * @author a.zharov
  */
 public interface FileService {

@@ -22,8 +22,11 @@ public class KafkaConsumerService {
     private final ObjectMapper objectMapper;
     private final RawDataRepository rawDataRepository;
 
+    /**
+     * Слушатель сообщений от пользователя
+     */
     @KafkaListener(topics = "${kafka.topics.user-messages}")
-    public void listen(String message) throws JsonProcessingException {
+    public void listenUserMsg(String message) throws JsonProcessingException {
         log.info("Получено сообщение от брокера: {}", message);
         Update updateFromBroker = objectMapper.readValue(message, Update.class);
         saveRawData(updateFromBroker);

@@ -7,6 +7,8 @@ import org.hibernate.type.SqlTypes;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 /**
+ * Сущность сообщения ТГ
+ *
  * @author a.zharov
  */
 @NoArgsConstructor
@@ -24,6 +26,9 @@ public class RawData {
     @Column(name = "id")
     private Long id;
 
+    /**
+     * Содержимое сообщения со всей мета инфо
+     */
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private Update event;

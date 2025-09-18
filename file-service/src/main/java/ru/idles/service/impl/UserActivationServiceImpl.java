@@ -4,11 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.idles.dao.BotUserRepository;
-import ru.idles.entity.BotUser;
 import ru.idles.service.UserActivationService;
 import ru.idles.utils.CryptoTool;
-
-import java.util.Optional;
 
 /**
  * @author a.zharov

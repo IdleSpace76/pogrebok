@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import ru.idles.service.KafkaProducerService;
 
 /**
@@ -26,8 +28,24 @@ public class KafkaProducerServiceImpl implements KafkaProducerService {
         try {
             String json = objectMapper.writeValueAsString(object);
             kafkaTemplate.send(topic, json);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException("Failed to send message to Kafka", e);
+        }
+    }
+
+    @Override
+    public void sendObjectMessageAfterCommit(String topic, Object object) {
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    sendObjectMessage(topic, object);
+                }
+            });
+        }
+        else {
+            sendObjectMessage(topic, object);
         }
     }
 }

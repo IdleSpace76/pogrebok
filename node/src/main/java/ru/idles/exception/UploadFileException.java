@@ -1,6 +1,8 @@
 package ru.idles.exception;
 
 /**
+ * Ошибка загрузки
+ *
  * @author a.zharov
  */
 public class UploadFileException extends RuntimeException {

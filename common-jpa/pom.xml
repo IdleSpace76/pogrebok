@@ -9,6 +9,7 @@
 
     <artifactId>common-jpa</artifactId>
     <packaging>jar</packaging>
+    <description>Содержит сущности для работы с БД</description>
 
     <name>common-jpa</name>
 

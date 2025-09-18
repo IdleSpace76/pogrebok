@@ -9,6 +9,7 @@
 
     <artifactId>common-kafka</artifactId>
     <packaging>jar</packaging>
+    <description>Содержит интерфейс для отправки сообщений кафка, автонастройку топиков и наименования топиков</description>
 
     <name>common-kafka</name>
 

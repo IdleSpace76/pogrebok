@@ -9,6 +9,7 @@
 
     <artifactId>node</artifactId>
     <packaging>jar</packaging>
+    <description>Логическая нода обработки и маршрутизации сообщений от пользователя</description>
 
     <name>node</name>
 

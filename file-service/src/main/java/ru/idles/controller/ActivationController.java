@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.idles.service.UserActivationService;
 
 /**
+ * Контроллер активации пользователя
+ *
  * @author a.zharov
  */
 @RestController

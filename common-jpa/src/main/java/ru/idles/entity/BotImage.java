@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 /**
+ * Сущность изображений
+ *
  * @author a.zharov
  */
 @Table(name = "bot_image")

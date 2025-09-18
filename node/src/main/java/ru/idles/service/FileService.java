@@ -6,6 +6,8 @@ import ru.idles.entity.BotImage;
 import ru.idles.enums.LinkType;
 
 /**
+ * Интерфейс обработки медиа
+ *
  * @author a.zharov
  */
 public interface FileService {

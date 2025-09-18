@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
+ * ДТО с почтой пользователя
+ *
  * @author a.zharov
  */
 @Data
@@ -12,6 +14,8 @@ import lombok.Data;
 @Builder
 public class MailParams {
 
+    /// Зашифрованный id пользователя
     private String id;
+    /// Почта пользователя
     private String mailTo;
 }

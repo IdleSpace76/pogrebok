@@ -11,6 +11,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import ru.idles.config.KafkaTopicsProperties;
 
 /**
+ * Обработчик сообщений от пользователя
+ *
  * @author a.zharov
  */
 @Service

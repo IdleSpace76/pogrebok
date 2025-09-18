@@ -4,19 +4,25 @@ import jakarta.mail.internet.AddressException;
 import jakarta.mail.internet.InternetAddress;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
+import ru.idles.config.KafkaTopicsProperties;
 import ru.idles.dao.BotUserRepository;
 import ru.idles.dto.MailParams;
 import ru.idles.entity.BotUser;
 import ru.idles.enums.UserState;
 import ru.idles.service.BotUserService;
+import ru.idles.service.KafkaProducerService;
 import ru.idles.utils.CryptoTool;
 
 import java.util.Optional;
@@ -32,9 +38,8 @@ public class BotUserServiceImpl implements BotUserService {
     private final BotUserRepository botUserRepository;
     private final CryptoTool cryptoTool;
     private final WebClient webClient;
-
-    @Value("${service.mail.uri}")
-    private String mailServiceUri;
+    private final KafkaProducerService kafkaProducerService;
+    private final KafkaTopicsProperties kafkaTopicsProperties;
 
     @Override
     public String registerUser(BotUser user) {
@@ -51,6 +56,7 @@ public class BotUserServiceImpl implements BotUserService {
     }
 
     @Override
+    @Transactional
     public String setEmail(BotUser user, String inputEmail) {
         String email = normalizeEmail(inputEmail);
         try {
@@ -63,17 +69,10 @@ public class BotUserServiceImpl implements BotUserService {
         if (botUser.isEmpty()) {
             user.setEmail(email);
             user.setState(UserState.BASIC_STATE);
-            user =  botUserRepository.save(user);
+            user = botUserRepository.save(user);
 
             String cryptoUserId = cryptoTool.hashOf(user.getId());
-            ResponseEntity<String> response = sendRequestToMailService(cryptoUserId, email);
-            if (response.getStatusCode() != HttpStatus.OK) {
-                String msg = String.format("Не удалось отправить письмо на адрес : %s", email);
-                log.error(msg);
-                user.setEmail(null);
-                botUserRepository.save(user);
-                return msg;
-            }
+            sendRegistrationMsg(cryptoUserId, email);
             return "На почту было отправлено письмо с ссылкой для подтверждения регистрации";
         }
         else {
@@ -81,26 +80,13 @@ public class BotUserServiceImpl implements BotUserService {
         }
     }
 
-    private ResponseEntity<String> sendRequestToMailService(String cryptoUserId, String email) {
+    private void sendRegistrationMsg(String cryptoUserId, String email) {
         MailParams mailParams = MailParams.builder()
                 .id(cryptoUserId)
                 .mailTo(email)
                 .build();
 
-        try {
-            return webClient.post()
-                    .uri(mailServiceUri)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(mailParams)
-                    .exchangeToMono(resp -> resp.toEntity(String.class))
-                    .onErrorResume(WebClientResponseException.class, e ->
-                            Mono.just(ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString())))
-                    .onErrorResume(Throwable.class, e ->
-                            Mono.just(ResponseEntity.status(500).body("Ошибка вызова mail сервиса: " + e.getMessage())))
-                    .block();
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Ошибка вызова mail сервиса: " + e.getMessage());
-        }
+        kafkaProducerService.sendObjectMessageAfterCommit(kafkaTopicsProperties.getRegistrationMail(), mailParams);
     }
 
     private String normalizeEmail(String email) {

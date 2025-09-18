@@ -3,6 +3,8 @@ package ru.idles.enums;
 import lombok.RequiredArgsConstructor;
 
 /**
+ * Команды бота
+ *
  * @author a.zharov
  */
 @RequiredArgsConstructor

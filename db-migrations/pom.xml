@@ -9,6 +9,7 @@
 
     <artifactId>db-migrations</artifactId>
     <packaging>jar</packaging>
+    <description>Миграция БД</description>
 
     <name>db-migrations</name>
 

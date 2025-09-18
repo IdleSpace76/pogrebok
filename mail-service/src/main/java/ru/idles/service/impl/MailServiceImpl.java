@@ -15,12 +15,12 @@ import ru.idles.service.MailService;
 @RequiredArgsConstructor
 public class MailServiceImpl implements MailService {
 
-    private final JavaMailSender javaMailSender;
-
     @Value("${spring.mail.username}")
     private String emailFrom;
     @Value("${service.activation.uri}")
     private String activationServiceUri;
+
+    private final JavaMailSender javaMailSender;
 
     @Override
     public void sendMail(MailParams mailParams) {
