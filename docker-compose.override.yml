@@ -1,0 +1,80 @@
+services:
+  db-migrations:
+    build:
+      context: .
+      dockerfile: ./db-migrations/Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+    restart: "no"
+
+  dispatcher:
+    build:
+      context: .
+      dockerfile: ./dispatcher/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      db-migrations:
+        condition: service_completed_successfully
+      kafka:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      TELEGRAM_BOT_TOKEN: ${POGREBOK_TOKEN}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+    restart: unless-stopped
+
+  file-service:
+    build:
+      context: .
+      dockerfile: ./file-service/Dockerfile
+    ports:
+      - "8086:8086"
+    depends_on:
+      db-migrations:
+        condition: service_completed_successfully
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+    restart: unless-stopped
+
+  mail-service:
+    build:
+      context: .
+      dockerfile: ./mail-service/Dockerfile
+    depends_on:
+      db-migrations:
+        condition: service_completed_successfully
+      kafka:
+        condition: service_started
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      SPRING_MAIL_USERNAME: ${POGREBOK_MAIL_NAME}
+      SPRING_MAIL_PASSWORD: ${POGREBOK_MAIL}
+    restart: unless-stopped
+
+  node:
+    build:
+      context: .
+      dockerfile: ./node/Dockerfile
+    depends_on:
+      db-migrations:
+        condition: service_completed_successfully
+      kafka:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${DB_NAME}
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:19092
+      TELEGRAM_BOT_TOKEN: ${POGREBOK_TOKEN}
+    restart: unless-stopped

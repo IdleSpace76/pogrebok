@@ -32,6 +32,8 @@ _________________
 > kafka-topics.sh --bootstrap-server localhost:9092 --delete --topic bot-messages <br/>
 > kafka-topics.sh --bootstrap-server localhost:9092 --list
 > 
+> docker compose up --build --scale node=3
+ 
 UI для кафки (Kafdrop): http://localhost:9000
 
 > [!TIP]

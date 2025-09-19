@@ -1,0 +1,18 @@
+**/target/
+**/build/
+!*/src/main/resources/   # ресурсы оставляем, если вдруг собираем без jar
+
+.idea/
+.vscode/
+*.iml
+
+.git/
+.gitignore
+
+*.log
+*.tmp
+*.swp
+.DS_Store
+
+docker-compose.override.yml
+.env.example
