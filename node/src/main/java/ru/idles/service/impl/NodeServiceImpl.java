@@ -171,7 +171,7 @@ public class NodeServiceImpl implements NodeService {
         if (botUser.isEmpty()) {
             BotUser transientBotUser = BotUser.builder()
                     .telegramUserId(telegramUser.getId())
-                    .username(telegramUser.getUserName())
+                    .userName(telegramUser.getUserName())
                     .firstName(telegramUser.getFirstName())
                     .lastName(telegramUser.getLastName())
                     .isActive(false)

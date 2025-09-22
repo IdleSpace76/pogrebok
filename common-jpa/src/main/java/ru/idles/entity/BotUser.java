@@ -38,7 +38,7 @@ public class BotUser {
 
     private String email;
 
-    private String username;
+    private String userName;
 
     private Boolean isActive;
 
