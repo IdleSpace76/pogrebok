@@ -16,7 +16,7 @@ _________________
 - Liquibase
 
 ## Архитектура:
-![Архитектура](/docs/images/architecture.png)
+![Архитектура](/docs/images/architecture.jpg)
 
 ## План:
 - [x] Создать dispatcher (контроллер)
